@@ -1,11 +1,18 @@
 const fs = require('fs');
 const path = require('path');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 const Router = require('koa-router');
 const router = new Router();
 const spider = require('../utils/spider');
 const creatFile = require('../utils/index');
 const db = require('../sql');
 const actions = require('../sql/action');
+const rootpath = (p = '../') => {
+  return path.join(__dirname, p);
+}
+
+console.log(rootpath());
 
 const user =
   `create table if not exists user(
@@ -21,13 +28,19 @@ router.post(
     await db.createTable(user);
     await creatFile('public/upload/');
     const reader = fs.createReadStream(file.path);
-    const filePath = path.join(__dirname, '../public/upload/') + `/${file.name}`;
+    const filePath = rootpath('../public/upload/') + `/${file.name}`;
     actions.insertImage([filePath]);
     const upStream = fs.createWriteStream(filePath);
     reader.pipe(upStream);
+    const {
+      stdout,
+      stderr
+    } = await exec(`git pull && git add . && git commit -m 'feat: 新增图片;' && git push`);
+    console.log('stdout:', stdout);
+    console.log('stderr:', stderr);
     ctx.body = {
       msg: '上传成功！',
-      url: `${ctx.host}/${file.name}`,
+      url: `https://github.com/cpg0525/qrcode-tool/blob/master/public/upload/${file.name}?raw=true`,
       status: 1
     };
   }
@@ -62,7 +75,7 @@ router.get('/action/get/qrcode', async ctx => {
 
 router.get('/action/get/mysql', async ctx => {
   try {
-    const re = await actions.queryImageById(3);
+    const re = await actions.queryImageByIdOfRange(1, 3);
     ctx.body = {
       msg: '查询成功',
       re,
