@@ -36,7 +36,6 @@ router.post(
       stdout,
       stderr
     } = await exec(`git pull && git add . && git commit -m 'feat: 新增图片;' && git push`);
-    console.log('stdout:', stdout);
     console.log('stderr:', stderr);
     ctx.body = {
       msg: '上传成功！',
