@@ -127,4 +127,4 @@ $ yarn generate
       'd': undefined,
       'e': [1, { a: 2 }]
     }
-    console.log(compare(obj, target)); // id1->detail1->age2->sex2->a3->d1->e1.2
+    console.log(compare(obj, target)); // id1->detail1->age2->sex2->a3->d1->e1.3
