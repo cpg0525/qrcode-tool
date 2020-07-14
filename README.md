@@ -129,4 +129,4 @@ $ yarn generate
     }
     console.log(compare(obj, target)); // id1->detail1->age2->sex2->a3->d1->e1
     
-    1
+    123
