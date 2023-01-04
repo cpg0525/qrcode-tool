@@ -18,7 +18,7 @@
     "koa-body": "^4.1.0",
     "koa-router": "^7.4.0",
     "koa-session": "^5.12.2",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.15.8"
   },
   "devDependencies": {
     "child_process": "^1.0.2",
